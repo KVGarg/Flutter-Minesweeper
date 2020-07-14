@@ -1,0 +1,45 @@
+name: Minesweeper
+description: Minesweeper Board Game
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  bottom_navy_bar: ^5.4.0
+  cupertino_icons: ^0.1.3
+  explode_view: ^1.0.4
+  flutter_launcher_icons: ^0.7.5
+  flutter_spinkit: ^2.1.0
+  flutter_secure_storage: ^3.3.2
+  splashscreen: ^1.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/App-Logo.png
+
+  fonts:
+    - family: Comfortaa
+      fonts:
+        - asset: assets/fonts/Comfortaa/Comfortaa-Bold.ttf
+        - asset: assets/fonts/Comfortaa/Comfortaa-Light.ttf
+        - asset: assets/fonts/Comfortaa/Comfortaa-Medium.ttf
+        - asset: assets/fonts/Comfortaa/Comfortaa-Regular.ttf
+        - asset: assets/fonts/Comfortaa/Comfortaa-SemiBold.ttf
+        - asset: assets/fonts/Comfortaa/Comfortaa-VariableFont_wght.ttf
+    - family: PressStart2P
+      fonts:
+       - asset: assets/fonts/PressStart2P/PressStart2P-Regular.ttf
