@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                new Image.asset('assets/images/App-Logo.png'),
+                new Image.asset('assets/images/app_logo.png'),
                 SizedBox(height: 10),
                 new Text('Minesweeper Board Game', style: TextStyle(
                   fontFamily: 'PressStart2P',

@@ -12,7 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  bottom_navy_bar: ^5.4.0
   cupertino_icons: ^0.1.3
   explode_view: ^1.0.4
   flutter_launcher_icons: ^0.7.5
@@ -29,7 +28,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/App-Logo.png
+    - assets/images/app_logo.png
 
   fonts:
     - family: Comfortaa

@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
       seconds: 3,
       navigateAfterSeconds: '/home',
       title: new Text('Minesweeper Board Game'),
-      image: new Image.asset('assets/images/App-Logo.png'),
+      image: new Image.asset('assets/images/app_logo.png'),
       backgroundColor: WHITE_COLOR,
       photoSize: 100.0,
       loaderColor: ACCENT_COLOR
