@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:share/share.dart';
 
 import 'appConstants.dart';
 
@@ -39,6 +40,11 @@ Widget getAppBar({@required String title}) {
     backgroundColor: WHITE_COLOR,
     leading: new Image.asset('assets/images/app_logo.png'),
     elevation: 0.0,
+    actions: <Widget>[
+      IconButton(
+        icon: Icon(Icons.share),
+        onPressed: shareApp)
+    ],
   );
 }
 
@@ -102,4 +108,10 @@ String getDurationString({@required int seconds}) {
   else
     return '---';
 
+}
+
+void shareApp() {
+  Share.share('Download and Install this cool board game.\nDownload Link: $GOOGLE_DRIVE_LINK',
+    subject: 'Minesweeper Board Game'
+  );
 }

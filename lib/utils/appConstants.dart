@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 // COLORS //
@@ -68,3 +70,6 @@ const UNEXPECTED_ERROR_MESSAGE = 'An unexpected error raised, Please try again, 
 const NO_GAME_PLAYED_MESSAGE = 'Hey there! Looks like you have not played any exam. Who is '
   'stopping you from playing this cool game, an all-time favourite game from childhood. Hurry Up! '
   'Go Back,  and play a game.';
+
+// APP DOWNLOAD Link
+const GOOGLE_DRIVE_LINK = 'https://flutter.dev';

@@ -49,6 +49,12 @@ class HomeScreen extends StatelessWidget {
                   context: context
                 ),
                 getMenuOption(
+                  onPressed: shareApp,
+                  optionIcon: Icons.share,
+                  label: 'Share App',
+                  context: context
+                ),
+                getMenuOption(
                   onPressed: () => Navigator.of(context).pushNamed('/aboutDeveloper'),
                   optionIcon: Icons.person,
                   label: 'About Developer',
