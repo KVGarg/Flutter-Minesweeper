@@ -66,7 +66,6 @@ class AboutMe extends StatelessWidget {
                     }),
                 ],
               ),
-              getBackButton(buildContext: context)
             ],
           ),
         ),

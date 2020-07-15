@@ -24,7 +24,6 @@ class Instructions extends StatelessWidget {
                       style: getTextStyleSettings(fontSize: FontSize.SMALL),),
                   );
                 }),
-              getBackButton(buildContext: context)
             ],
           ),
         ),

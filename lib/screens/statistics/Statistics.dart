@@ -25,11 +25,6 @@ class _StatisticsState extends State<Statistics> {
         );
       })
     });
-
-    _statisticsDetails = [
-      getBackButton(buildContext: context)
-    ];
-
     super.didChangeDependencies();
   }
 

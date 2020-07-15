@@ -82,18 +82,6 @@ TextStyle getTextStyleSettings({
     fontSize: fontSize);
 }
 
-Widget getBackButton({@required BuildContext buildContext}) {
-  return Visibility(
-    visible: Platform.isIOS,
-    child: FlatButton.icon(
-      shape: Border.all(color: BLACK_COLOR, width: 1.0, style: BorderStyle.solid),
-      onPressed: () => Navigator.of(buildContext).pop(),
-      icon: Icon(Icons.arrow_back_ios),
-      label: Text('Go Back',
-        style: getTextStyleSettings(fontFamily: 'PressStart2P')
-      )));
-}
-
 String getDurationString({@required int seconds}) {
   Duration playedTimeDuration = new Duration(seconds: seconds);
 
