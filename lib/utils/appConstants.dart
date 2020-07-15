@@ -65,7 +65,7 @@ const GAME_INSTRUCTIONS = [
 // ERROR MESSAGES
 const UNEXPECTED_ERROR_MESSAGE = 'An unexpected error raised, Please try again, or contact support '
   'team.';
-const NO_GAME_PLAYED_MESSAGE = 'Hey there! Looks like you have not played any exam. Who is '
+const NO_GAME_PLAYED_MESSAGE = 'Hey there! Looks like you have not played any game. Who is '
   'stopping you from playing this cool game, an all-time favourite game from childhood. Hurry Up! '
   'Go Back,  and play a game.';
 
@@ -76,3 +76,33 @@ const GOOGLE_DRIVE_LINK = 'https://flutter.dev';
 const BLIP_SOUND_FP = 'assets/sounds/blip.wav';
 const DIGGING_SOUND_FP = 'assets/sounds/digging.wav';
 const EXPLOSION_SOUND_FP = 'assets/sounds/explosion.mp3';
+
+// Game Matrices Init Classes
+class GameLevels {
+  static int beginner = 1;
+  static int intermediate = 2;
+  static int advanced = 3;
+}
+
+class LevelSize {
+  static int beginner = 9;
+  static int intermediate = 16;
+  static int advanced = 24;
+}
+
+class LevelMines {
+  static int beginner = 10;
+  static int intermediate = 40;
+  static int advanced = 99;
+}
+
+class NeighbourDensityBasedColor {
+  static Color one = Colors.greenAccent;
+  static Color two = Colors.green;
+  static Color three = Colors.redAccent;
+  static Color four = Colors.red;
+  static Color five = Colors.deepPurpleAccent;
+  static Color six = Colors.deepPurple;
+  static Color seven = Colors.purpleAccent;
+  static Color eight = Colors.purple;
+}
