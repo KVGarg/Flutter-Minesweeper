@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'appConstants.dart';
@@ -32,13 +33,12 @@ void displaySnackBar({
   ));
 }
 
-Widget appBar({@required String title, bool implyLeading = true}) {
+Widget getAppBar({@required String title}) {
   return AppBar(
-    automaticallyImplyLeading: implyLeading,
-    title: Text(title),
-    actions: <Widget>[
-
-    ],
+    title: Text(title, style: getTextStyleSettings(),),
+    backgroundColor: WHITE_COLOR,
+    leading: new Image.asset('assets/images/app_logo.png'),
+    elevation: 0.0,
   );
 }
 
@@ -62,4 +62,28 @@ Widget getAnimatedLoader({bool isFormSubmitted = true}) {
           ))
       ],
     ));
+}
+
+TextStyle getTextStyleSettings({
+  String fontFamily: 'PressStart2P', double fontSize: FontSize.MEDIUM
+}) {
+  return TextStyle(
+    color: BLACK_87_COLOR,
+    height: 1.5,
+    fontFamily: fontFamily,
+    textBaseline: TextBaseline.ideographic,
+    decoration: TextDecoration.none,
+    fontSize: fontSize);
+}
+
+Widget getBackButton({@required BuildContext buildContext}) {
+  return Visibility(
+    visible: Platform.isIOS,
+    child: FlatButton.icon(
+      shape: Border.all(color: BLACK_COLOR, width: 1.0, style: BorderStyle.solid),
+      onPressed: () => Navigator.of(buildContext).pop(),
+      icon: Icon(Icons.arrow_back_ios),
+      label: Text('Go Back',
+        style: getTextStyleSettings(fontFamily: 'PressStart2P')
+      )));
 }
