@@ -45,6 +45,9 @@ flutter:
         - asset: assets/fonts/Comfortaa/Comfortaa-Regular.ttf
         - asset: assets/fonts/Comfortaa/Comfortaa-SemiBold.ttf
         - asset: assets/fonts/Comfortaa/Comfortaa-VariableFont_wght.ttf
+    - family: Calculator
+      fonts:
+        - asset: assets/fonts/Calculator/Calculator.ttf
     - family: PressStart2P
       fonts:
        - asset: assets/fonts/PressStart2P/PressStart2P-Regular.ttf
