@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 class HomeScreen extends StatelessWidget {
 
   static BuildContext activityContext;
+  static Size screenSize;
 
   @override
   Widget build(BuildContext context) {
+    screenSize = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () => onWillPop(buildContext: activityContext),
       child: Scaffold(
@@ -28,25 +30,29 @@ class HomeScreen extends StatelessWidget {
                   fontSize: FontSize.MEDIUM
                 )),
                 SizedBox(height: 30),
-                FlatButton.icon(
+                getMenuOption(
                   onPressed: () => Navigator.of(context).pushNamed('/chooseGameLevel'),
-                  icon: Icon(Icons.play_arrow),
-                  label: Text('Play Game      '),
+                  optionIcon: Icons.play_arrow,
+                  label: 'Play Game',
+                  context: context
                 ),
-                FlatButton.icon(
+                getMenuOption(
                   onPressed: () => Navigator.of(context).pushNamed('/instructions'),
-                  icon: Icon(Icons.info),
-                  label: Text('Instructions   ', textAlign: TextAlign.left),
+                  optionIcon: Icons.info,
+                  label: 'Instructions',
+                  context: context
                 ),
-                FlatButton.icon(
+                getMenuOption(
                   onPressed: () => Navigator.of(context).pushNamed('/statistics'),
-                  icon: Icon(Icons.list),
-                  label: Text('Statistics     ', textAlign: TextAlign.left),
+                  optionIcon: Icons.list,
+                  label: 'Statistics',
+                  context: context
                 ),
-                FlatButton.icon(
+                getMenuOption(
                   onPressed: () => Navigator.of(context).pushNamed('/aboutDeveloper'),
-                  icon: Icon(Icons.person),
-                  label: Text('About Developer', textAlign: TextAlign.left),
+                  optionIcon: Icons.person,
+                  label: 'About Developer',
+                  context: context
                 ),
               ],
             ),
@@ -55,5 +61,22 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+  
+  Widget getMenuOption({
+    @required onPressed, @required IconData optionIcon, @required String label,
+    @required BuildContext context
+  }){
 
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        FlatButton.icon(
+          padding: EdgeInsets.only(left: screenSize.width * 0.20),
+          onPressed: onPressed,
+          icon: Icon(optionIcon),
+          label: Text(label, textAlign: TextAlign.left),
+        ),
+      ],
+    );
+  }
 }
