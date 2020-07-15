@@ -39,13 +39,19 @@ class HomeScreen extends StatelessWidget {
                 getMenuOption(
                   onPressed: '/instructions',
                   optionIcon: Icons.info,
-                  label: 'Instructions',
+                  label: 'How To Play',
                   context: context
                 ),
                 getMenuOption(
                   onPressed: '/statistics',
                   optionIcon: Icons.list,
                   label: 'Statistics',
+                  context: context
+                ),
+                getMenuOption(
+                  onPressed: '/settings',
+                  optionIcon: Icons.settings,
+                  label: 'Settings',
                   context: context
                 ),
                 getMenuOption(
@@ -73,15 +79,14 @@ class HomeScreen extends StatelessWidget {
     @required BuildContext context
   }){
 
-    if (onPressed is String)
-      onPressed = () => Navigator.of(context).pushNamed(onPressed);
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         FlatButton.icon(
           padding: EdgeInsets.only(left: screenSize.width * 0.20),
-          onPressed: onPressed,
+          onPressed: onPressed is String
+            ? () => Navigator.of(context).pushNamed(onPressed)
+            : onPressed,
           icon: Icon(optionIcon),
           label: Text(label, textAlign: TextAlign.left),
         ),

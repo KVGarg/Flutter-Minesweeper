@@ -3,6 +3,7 @@ import 'package:Minesweeper/screens/about_me/AboutMe.dart';
 import 'package:Minesweeper/screens/instructions/Instructions.dart';
 import 'package:Minesweeper/screens/play_game/ChooseGameLevel.dart';
 import 'package:Minesweeper/screens/play_game/StartGame.dart';
+import 'package:Minesweeper/screens/settings/Settings.dart';
 import 'package:Minesweeper/screens/statistics/Statistics.dart';
 import 'package:Minesweeper/services/gameStatistics.dart';
 import 'package:Minesweeper/utils/appConstants.dart';
@@ -48,6 +49,7 @@ Map<String, Widget Function(BuildContext)> getApplicationRoutes() {
     '/startGame': (BuildContext buildContext) => StartGame(),
     '/instructions': (BuildContext buildContext) => Instructions(),
     '/statistics': (BuildContext buildContext) => Statistics(),
+    '/settings': (BuildContext buildContext) => Settings(),
     '/aboutDeveloper': (BuildContext buildContext) => AboutMe(),
   };
 }
