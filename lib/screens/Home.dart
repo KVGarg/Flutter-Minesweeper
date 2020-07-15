@@ -31,19 +31,19 @@ class HomeScreen extends StatelessWidget {
                 )),
                 SizedBox(height: 30),
                 getMenuOption(
-                  onPressed: () => Navigator.of(context).pushNamed('/chooseGameLevel'),
+                  onPressed: '/chooseGameLevel',
                   optionIcon: Icons.play_arrow,
                   label: 'Play Game',
                   context: context
                 ),
                 getMenuOption(
-                  onPressed: () => Navigator.of(context).pushNamed('/instructions'),
+                  onPressed: '/instructions',
                   optionIcon: Icons.info,
                   label: 'Instructions',
                   context: context
                 ),
                 getMenuOption(
-                  onPressed: () => Navigator.of(context).pushNamed('/statistics'),
+                  onPressed: '/statistics',
                   optionIcon: Icons.list,
                   label: 'Statistics',
                   context: context
@@ -55,7 +55,7 @@ class HomeScreen extends StatelessWidget {
                   context: context
                 ),
                 getMenuOption(
-                  onPressed: () => Navigator.of(context).pushNamed('/aboutDeveloper'),
+                  onPressed: '/aboutDeveloper',
                   optionIcon: Icons.person,
                   label: 'About Developer',
                   context: context
@@ -72,6 +72,9 @@ class HomeScreen extends StatelessWidget {
     @required onPressed, @required IconData optionIcon, @required String label,
     @required BuildContext context
   }){
+
+    if (onPressed is String)
+      onPressed = () => Navigator.of(context).pushNamed(onPressed);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
