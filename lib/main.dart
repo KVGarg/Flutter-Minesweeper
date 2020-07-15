@@ -4,6 +4,7 @@ import 'package:Minesweeper/screens/instructions/Instructions.dart';
 import 'package:Minesweeper/screens/play_game/ChooseGameLevel.dart';
 import 'package:Minesweeper/screens/play_game/StartGame.dart';
 import 'package:Minesweeper/screens/statistics/Statistics.dart';
+import 'package:Minesweeper/services/gameStatistics.dart';
 import 'package:Minesweeper/utils/appConstants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,8 @@ void main() {
 
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  SystemChrome.setEnabledSystemUIOverlays ([SystemUiOverlay.top]);
+  SystemChrome.setEnabledSystemUIOverlays ([]);
+  initGameStatistics();
 
   runApp(
     MaterialApp(
@@ -24,6 +26,12 @@ void main() {
         accentColor: ACCENT_COLOR,
         brightness: Brightness.light,
         fontFamily: 'PressStart2P',
+        pageTransitionsTheme: PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          }
+        )
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/',

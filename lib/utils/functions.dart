@@ -87,3 +87,19 @@ Widget getBackButton({@required BuildContext buildContext}) {
         style: getTextStyleSettings(fontFamily: 'PressStart2P')
       )));
 }
+
+String getDurationString({@required int seconds}) {
+  Duration playedTimeDuration = new Duration(seconds: seconds);
+
+  if (playedTimeDuration.inDays > 0)
+    return '${playedTimeDuration.inDays} Day(s)';
+  else if (playedTimeDuration.inHours > 0)
+    return '${playedTimeDuration.inHours} Hour(s)';
+  else if (playedTimeDuration.inMinutes > 0)
+    return '${playedTimeDuration.inMinutes} Minute(s)';
+  else if (playedTimeDuration.inSeconds > 0)
+    return '${playedTimeDuration.inSeconds} Second(s)';
+  else
+    return '---';
+
+}
