@@ -9,7 +9,7 @@ void initGameStatistics() async {
     FlutterSecureStorage().write(
       key: 'statistics',
       value: jsonEncode(<String, int>{
-        'wins': 12,
+        'wins': 0,
         'loses': 0,
         'total_time_played': 0,
         'squares_popped': 0,

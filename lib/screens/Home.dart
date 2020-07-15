@@ -1,3 +1,4 @@
+import 'package:Minesweeper/services/manageSoundAndVibrations.dart';
 import 'package:Minesweeper/utils/appConstants.dart';
 import 'package:Minesweeper/utils/functions.dart';
 import 'package:flutter/cupertino.dart';
@@ -85,8 +86,11 @@ class HomeScreen extends StatelessWidget {
         FlatButton.icon(
           padding: EdgeInsets.only(left: screenSize.width * 0.20),
           onPressed: onPressed is String
-            ? () => Navigator.of(context).pushNamed(onPressed)
-            : onPressed,
+            ? () {
+            playButtonClickSound();
+            playVibration();
+            Navigator.of(context).pushNamed(onPressed);
+          } : onPressed,
           icon: Icon(optionIcon),
           label: Text(label, textAlign: TextAlign.left),
         ),

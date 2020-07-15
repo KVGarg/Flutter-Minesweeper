@@ -6,6 +6,7 @@ import 'package:Minesweeper/screens/play_game/StartGame.dart';
 import 'package:Minesweeper/screens/settings/Settings.dart';
 import 'package:Minesweeper/screens/statistics/Statistics.dart';
 import 'package:Minesweeper/services/gameStatistics.dart';
+import 'package:Minesweeper/services/manageSoundAndVibrations.dart';
 import 'package:Minesweeper/utils/appConstants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setEnabledSystemUIOverlays ([]);
   initGameStatistics();
+  initSoundAndVibrationsSettings();
 
   runApp(
     MaterialApp(

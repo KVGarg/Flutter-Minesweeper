@@ -71,3 +71,8 @@ const NO_GAME_PLAYED_MESSAGE = 'Hey there! Looks like you have not played any ex
 
 // APP DOWNLOAD Link
 const GOOGLE_DRIVE_LINK = 'https://flutter.dev';
+
+// SOUND FILE PATHS
+const BLIP_SOUND_FP = 'assets/sounds/blip.wav';
+const DIGGING_SOUND_FP = 'assets/sounds/digging.wav';
+const EXPLOSION_SOUND_FP = 'assets/sounds/explosion.mp3';
