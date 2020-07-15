@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // COLORS //
@@ -46,6 +45,22 @@ const ABOUT_DEVELOPER = "Good to know that you're interested in knowing about th
   "he has developed skills like being a productive software developer, developing customer "
   "centered mobile application, and websites, and apart from all this he is UI/UX designer "
   "also.";
+
+// GAME INSTRUCTIONS
+const GAME_INSTRUCTIONS = [
+  'To uncover a square, click on one of the squares on the grid.',
+  'By clicking on a square, you can see the number of mines in the neighbouring boxes (maximum 8) '
+  'that surround it to the left or right, up or down, or diagonally. Be careful, some squares hide '
+  'a bomb and other squares do not.',
+  'Use the numbers to free up other boxes. For example, the "2" on a square represent that the '
+  'square is surrounded by 2 mines which can be anywhere left or right, up or down, or diagonally.',
+  'Long press on a square to place a flag! It potentially (or surely) hides a bomb, you can guess '
+  'that there are no mines in the marked places.',
+  'There are 3 game levels-\n'
+    '* Beginner (9 * 9 Board and 10 Mines)\n'
+    '* Intermediate (16 * 16 Board and 40 Mines)\n'
+    '* Advanced (24 * 24 Board and 99 Mines)'
+];
 
 // ERROR MESSAGES
 const unexpectedErrorMessage = 'An unexpected error raised, Please try again, or contact support team.';
