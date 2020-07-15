@@ -16,14 +16,14 @@ class _StatisticsState extends State<Statistics> {
 
   @override
   void didChangeDependencies() {
-    getGameStatistics().then((value) => {
+    getGameStatistics().then((value) {
       setState(() {
         gameStatistics = value;
         _statisticsDetails.insertAll(0,
           gameStatistics['total_time_played'] > 0
             ? getGameStatisticsContainer() : getNoGamesPlayedContainer()
         );
-      })
+      });
     });
     super.didChangeDependencies();
   }
@@ -31,6 +31,7 @@ class _StatisticsState extends State<Statistics> {
   List<Widget> getGameStatisticsContainer() {
     return <Widget>[
       getWinsAndTimePlayedDetails(),
+      SizedBox(height: 20),
       getOtherStatTextWidget('W/L', gameStatistics['wins'] ~/ gameStatistics['loses']),
       getOtherStatTextWidget('Squares Popped', gameStatistics['squares_popped']),
       getOtherStatTextWidget('Bombs Diffused', gameStatistics['diffused_bombs']),

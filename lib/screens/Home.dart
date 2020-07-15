@@ -85,6 +85,7 @@ class HomeScreen extends StatelessWidget {
       children: <Widget>[
         FlatButton.icon(
           padding: EdgeInsets.only(left: screenSize.width * 0.20),
+          highlightColor: WHITE_COLOR,
           onPressed: onPressed is String
             ? () {
             playButtonClickSound();

@@ -26,9 +26,10 @@ Future<Map<String, int>> getGameStatistics() async {
   return Map<String, int>.from(jsonDecode(gameStats));
 }
 
-void setGameStatistics({@required String keyName, @required int keyValue}) async {
-  String gameStatsString = await FlutterSecureStorage().read(key: 'statistics');
-  Map<String, int> gameStats = jsonDecode(gameStatsString);
-  gameStats[keyName] = keyValue;
+void setGameStatistics({@required Map<String, int> updatedStats}) async {
+  Map<String, int> gameStats = await getGameStatistics();
+  updatedStats.forEach((key, value) {
+    gameStats[key] += value;
+  });
   FlutterSecureStorage().write(key: 'statistics', value: jsonEncode(gameStats));
 }
