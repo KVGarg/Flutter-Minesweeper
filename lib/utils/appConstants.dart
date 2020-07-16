@@ -139,3 +139,10 @@ class ImageType {
   static const TROPHY_ICON = 'trophy_icon.png';
   static const WIN_SCREEN = 'win_Screen.png';
 }
+
+class GameMessages {
+  static const WIN = 'Congratulations! You have cleared all the land, by not stepping on any mine.'
+    ' Wanna try again one more time?';
+  static const LOSE = 'Accidentally! You stepped on a mine. No Worries, Wins and Loses are a part'
+    ' of game. Try again one more time.';
+}

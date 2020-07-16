@@ -154,9 +154,11 @@ class MinesweeperMatrix {
     }
   }
 
-  Future<void> handleMineExplosion() async {
-    playVibration();
-    playSound(fileName: GameSounds.EXPLOSION_SOUND_FP);
+  Future<void> handleMineExplosion({bool playVibrationAndSound: true}) async {
+    if (playVibrationAndSound) {
+      playVibration();
+      playSound(fileName: GameSounds.EXPLOSION_SOUND_FP);
+    }
     minesPosition.forEach((rowNumber, columnNumbers) async {
       await Future.forEach(columnNumbers, (columnNumber) async {
         boardSquare = minesInCellNeighbours[rowNumber][columnNumber];
@@ -177,6 +179,7 @@ class MinesweeperMatrix {
           if (boardSquare.neighbourMinesCount >= 0
               && !boardSquare.isSelfMine && !boardSquare.isFlagged && !boardSquare.isPopped) {
             squaresPopped += 1;
+            movesLeft -= 1;
             boardSquare.isStateChanged = true;
             boardSquare.isPopped = true;
             if (boardSquare.neighbourMinesCount == 0)
@@ -184,6 +187,7 @@ class MinesweeperMatrix {
           }
         } else {
           squaresPopped += 1;
+          movesLeft -= 1;
           boardSquare = minesInCellNeighbours[xCord][yCord];
           boardSquare.isStateChanged = true;
           boardSquare.isPopped = true;
@@ -192,6 +196,16 @@ class MinesweeperMatrix {
     }
     return;
 
+  }
+
+  Future<void> hideCellsAndShowOnlyMines() async {
+    Future.forEach(minesInCellNeighbours, (List<BoardSquare> rowBoardSquares) async {
+      await Future.forEach(rowBoardSquares, (BoardSquare boardSquare) async {
+        boardSquare.isPopped = boardSquare.isSelfMine;
+        boardSquare.isFlagged = false;
+        boardSquare.isStateChanged = true;
+      });
+    });
   }
 
 }

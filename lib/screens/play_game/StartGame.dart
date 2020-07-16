@@ -17,7 +17,6 @@ class StartGame extends StatefulWidget {
 }
 
 class _StartGameState extends State<StartGame> {
-
   Size screenSize;
   Timer _gameTimer;
   Widget emptyCellWidget;
@@ -164,16 +163,14 @@ class _StartGameState extends State<StartGame> {
 
     isNextCellDark = false;
     return new Column(mainAxisSize: MainAxisSize.max, children: grassRows);
-
   }
-
 
   getGrassImageContainer({@required bool isEvenCell, @required int xCord, @required int yCord}) {
     Widget grassCellView;
     if (boardSquare.isPopped) {
       grassCellView = Container();
     } else {
-      if (boardSquare.isFlagged) {
+      if (!minesweeperMatrix.gameWon && boardSquare.isFlagged) {
         grassCellView = Container(
           width: minesweeperMatrix.cellWidth,
           height: minesweeperMatrix.cellHeight,
@@ -197,7 +194,7 @@ class _StartGameState extends State<StartGame> {
             ),
           ),
         );
-      } else {
+      } else  if (!minesweeperMatrix.gameWon && boardSquare.isFlagged) {
         grassCellView = Container(
           width: minesweeperMatrix.cellWidth,
           height: minesweeperMatrix.cellHeight,
@@ -211,6 +208,25 @@ class _StartGameState extends State<StartGame> {
               height: minesweeperMatrix.cellHeight,
               fit: BoxFit.fill,),
           ),
+        );
+      } else if (minesweeperMatrix.gameWon) {
+        grassCellView = Container(
+          width: minesweeperMatrix.cellWidth,
+          height: minesweeperMatrix.cellHeight,
+          child: Stack(
+            fit: StackFit.expand,
+            alignment: Alignment.center,
+            overflow: Overflow.visible,
+            children: <Widget>[
+              new Image.asset(
+                getImageFilePath(isEvenCell ? ImageType.DARK_GRASS : ImageType.LIGHT_GRASS),
+                fit: BoxFit.fill),
+              new Container(
+                width: minesweeperMatrix.cellWidth,
+                height: minesweeperMatrix.cellHeight,
+                color: GREEN_COLOR.withOpacity(0.8),
+              )
+            ]),
         );
       }
     }
@@ -242,17 +258,17 @@ class _StartGameState extends State<StartGame> {
     if (boardSquare.isSelfMine) {
       _gameTimer.cancel();
       await minesweeperMatrix.handleMineExplosion();
-      setState(() { });
-      await showGameLoseDialog();
+      setState(() {});
+      await showGamePlayDialog();
       Navigator.of(context).pop();
     } else {
       playSound(fileName: GameSounds.DIGGING_SOUND_FP);
       playVibration();
       if (boardSquare.neighbourMinesCount == 0)
         await minesweeperMatrix.digTheGrassAndExposeNeighbours(xCord, yCord);
-      setState(() { });
+      setState(() {});
+      if (minesweeperMatrix.movesLeft <= 0) await _handleWin();
     }
-
   }
 
   void flagSquare(int xCord, int yCord) {
@@ -277,42 +293,59 @@ class _StartGameState extends State<StartGame> {
       });
   }
 
-  Future<void> showGameLoseDialog() async {
+  Future<void> _handleWin() async {
+    minesweeperMatrix.gameWon = true;
+    playSound(fileName: GameSounds.WIN_SOUND_FP);
+    await minesweeperMatrix.hideCellsAndShowOnlyMines();
+    setState(() {});
+    await showGamePlayDialog();
+    Navigator.of(context).pop();
+  }
+
+  Future<void> showGamePlayDialog() async {
     await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext buildContext) {
         return Platform.isIOS
           ? CupertinoAlertDialog(
-            title: Text('Mine Exploded!', style: getTextStyleSettings(fontColor: RED_ACCENT_COLOR)),
-            content: getTryAgainDialogContent(),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Try again?', style: getTextStyleSettings(fontColor: GREEN_COLOR),)
-              )
-            ])
+              title: Text(minesweeperMatrix.gameWon ? 'Congratulations' : 'Mine Exploded!',
+                style: getTextStyleSettings(
+                  fontColor: minesweeperMatrix.gameWon ? GREEN_COLOR: RED_ACCENT_COLOR)),
+              content: getGamePlayDialogContent(),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(
+                    'Try again?',
+                    style: getTextStyleSettings(fontColor: GREEN_COLOR),
+                  ))
+              ])
           : AlertDialog(
-              title: Text('Mine Exploded!', style: getTextStyleSettings(fontColor: RED_ACCENT_COLOR)),
-              content: getTryAgainDialogContent(),actions: <Widget>[
+              title: Text(minesweeperMatrix.gameWon ? 'Congratulations' : 'Mine Exploded!',
+                style: getTextStyleSettings(
+                  fontColor: minesweeperMatrix.gameWon ? GREEN_COLOR: RED_ACCENT_COLOR)),
+              content: getGamePlayDialogContent(),
+              actions: <Widget>[
                 FlatButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Try again?', style: getTextStyleSettings(fontColor: GREEN_COLOR),)
-                )
+                  child: Text(
+                    'Try again?',
+                    style: getTextStyleSettings(fontColor: GREEN_COLOR),
+                  ))
               ]);
-      }
-    );
+      });
   }
 
-  Widget getTryAgainDialogContent() {
+
+  Widget getGamePlayDialogContent() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text(
-          'Accidentally! You stepped on a mine. No Worries, Wins and Loses are a part of game. '
-            'Try again one more time.',
+        Text(minesweeperMatrix.gameWon ? GameMessages.WIN : GameMessages.LOSE,
           style: getTextStyleSettings(),
-          textAlign: TextAlign.justify,),
+          textAlign: TextAlign.justify,
+        ),
         Padding(
           padding: const EdgeInsets.only(top: 10.0),
           child: new Row(
@@ -321,7 +354,10 @@ class _StartGameState extends State<StartGame> {
               new Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  new Image.asset(getImageFilePath(ImageType.CLOCK_ICON), width: 50,),
+                  new Image.asset(
+                    getImageFilePath(ImageType.CLOCK_ICON),
+                    width: 50,
+                  ),
                   Text('$totalSecondsPlayed',
                     style: getTextStyleSettings(fontSize: FontSize.MEDIUM * 1.5))
                 ],
@@ -330,8 +366,10 @@ class _StartGameState extends State<StartGame> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   new Image.asset(getImageFilePath(ImageType.TROPHY_ICON), width: 50),
-                  Text('${minesweeperMatrix.squaresPopped}',
-                    style: getTextStyleSettings(fontSize: FontSize.MEDIUM * 1.5),)
+                  Text(
+                    '${minesweeperMatrix.squaresPopped}',
+                    style: getTextStyleSettings(fontSize: FontSize.MEDIUM * 1.5),
+                  )
                 ],
               )
             ],
@@ -340,5 +378,4 @@ class _StartGameState extends State<StartGame> {
       ],
     );
   }
-
 }
