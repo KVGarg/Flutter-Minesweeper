@@ -49,13 +49,16 @@ class MinesweeperMatrix {
 
   findRandomPositionsOfMines() {
     int numberOfMinesPlaced = 0, x, y;
+    int maximumMinesInARow = sqrt(sizeAndMines.mines).toInt();
     while (numberOfMinesPlaced != sizeAndMines.mines) {
       x = Random().nextInt(sizeAndMines.size);
       y = Random().nextInt(sizeAndMines.size);
       if (!minesPosition.containsKey(x)) {
         minesPosition[x] = [y, ];
         numberOfMinesPlaced++;
-      } else if (minesPosition.containsKey(x) && !minesPosition[x].contains(y)) {
+      } else if (minesPosition.containsKey(x)
+        && minesPosition[x].length <= maximumMinesInARow
+        && !minesPosition[x].contains(y)) {
         minesPosition[x].add(y);
         numberOfMinesPlaced++;
       }
@@ -63,12 +66,12 @@ class MinesweeperMatrix {
   }
 
   findNeighbouringMines() {
-    int minesInNeighbour = 0;
+    int minesInNeighbour;
     bool isMineCell = false;
     for (int row = 0; row < sizeAndMines.size; row++) {
       minesInCellNeighbours.insert(row, List());
       for (int column = 0; column < sizeAndMines.size; column++) {
-
+        minesInNeighbour = 0;
         // Check mines in NW
         if (minesPosition.containsKey(row-1) && minesPosition[row-1].contains(column-1))
           minesInNeighbour += 1;
@@ -96,6 +99,8 @@ class MinesweeperMatrix {
         // Check whether self-cell has mine or not
         if (minesPosition.containsKey(row) && minesPosition[row].contains(column))
           isMineCell = true;
+        else
+          isMineCell = false;
 
         minesInCellNeighbours[row].add(BoardSquare(
           neighbourMinesCount: minesInNeighbour,

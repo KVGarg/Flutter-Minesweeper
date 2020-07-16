@@ -99,14 +99,30 @@ class LevelMines {
 }
 
 class NeighbourDensityBasedColor {
-  static Color one = Colors.greenAccent;
-  static Color two = Colors.green;
+  static Color one = Colors.green.shade900;
+  static Color two = Colors.amber.shade700;
   static Color three = Colors.redAccent;
   static Color four = Colors.red;
   static Color five = Colors.deepPurpleAccent;
   static Color six = Colors.deepPurple;
   static Color seven = Colors.purpleAccent;
   static Color eight = Colors.purple;
+
+  Color getColorFromIndex({int index}) {
+    Color color;
+    switch (index) {
+      case 1: color = one; break;
+      case 2: color = two; break;
+      case 3: color = three; break;
+      case 4: color = four; break;
+      case 5: color = five; break;
+      case 6: color = six; break;
+      case 7: color = seven; break;
+      case 8: color = eight; break;
+    }
+    return color;
+  }
+
 }
 
 class ImageType {
