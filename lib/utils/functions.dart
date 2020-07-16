@@ -8,6 +8,8 @@ import 'appConstants.dart';
 
 DateTime currentBackPressTime;
 
+// A function to let user warns before exiting the app. It maintains a 2-seconds duration record
+// to check if the user has just pressed back-button or not.
 Future<bool> onWillPop({@required BuildContext buildContext}) {
   DateTime now = DateTime.now();
   if (currentBackPressTime == null ||
@@ -20,6 +22,7 @@ Future<bool> onWillPop({@required BuildContext buildContext}) {
   return Future.value(true);
 }
 
+// A function to display a bottom snack-bar message in the app
 void displaySnackBar({
   @required BuildContext buildContext, @required String message, backgroundColor: GREY_COLOR
 }) {
@@ -34,6 +37,7 @@ void displaySnackBar({
   ));
 }
 
+// A function to display the app-bar in all the activity screens
 Widget getAppBar({@required String title}) {
   return AppBar(
     title: Text(title, style: getTextStyleSettings(),),
@@ -48,6 +52,8 @@ Widget getAppBar({@required String title}) {
   );
 }
 
+// An animated loader in foreground gets displayed when a heavy computation is being carried out
+// in background.
 Widget getAnimatedLoader({bool isFormSubmitted = true}) {
   return Visibility(
     visible: isFormSubmitted,
@@ -70,6 +76,7 @@ Widget getAnimatedLoader({bool isFormSubmitted = true}) {
     ));
 }
 
+// Common text-style settings to be used across the app
 TextStyle getTextStyleSettings({
   String fontFamily: 'PressStart2P', double fontSize: FontSize.MEDIUM,
   Color fontColor: BLACK_87_COLOR
@@ -83,6 +90,7 @@ TextStyle getTextStyleSettings({
     fontSize: fontSize);
 }
 
+// A function to convert the seconds into duration string, for better insight
 String getDurationString({@required int seconds}) {
   Duration playedTimeDuration = new Duration(seconds: seconds);
 
@@ -99,12 +107,14 @@ String getDurationString({@required int seconds}) {
 
 }
 
+// Share the App with your friends, through social media
 void shareApp() {
   Share.share('Download and Install this cool board game.\nDownload Link:'
     ' ${SocialMediaLinks.APP_DOWNLOAD_LINK}', subject: 'Minesweeper Board Game'
   );
 }
 
+// Get image file path
 String getImageFilePath(String imageType) {
   return 'assets/images/$imageType';
 }

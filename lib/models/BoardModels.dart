@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 
+// The Square Size - Row/Columns, and the number of mines in the selected game difficulty level
 class LevelSizeAndMines {
   int size, mines;
 

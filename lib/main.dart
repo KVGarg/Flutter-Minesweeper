@@ -17,8 +17,11 @@ import 'package:splashscreen/splashscreen.dart';
 void main() {
 
   WidgetsFlutterBinding.ensureInitialized();
+  // Allow only Portrait Orientation
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  // Hide Top, and Bottom Bar
   SystemChrome.setEnabledSystemUIOverlays ([]);
+  // Init Game Statistics, and app setings in local storage
   initGameStatistics();
   initSoundAndVibrationsSettings();
 
@@ -35,7 +38,7 @@ void main() {
             TargetPlatform.android: CupertinoPageTransitionsBuilder(),
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
           }
-        )
+        ) // used for swipe-back gestures
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/',

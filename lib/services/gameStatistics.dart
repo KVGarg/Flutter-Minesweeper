@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+// Init the game statistics, to keep records of each lose/win of the user
 void initGameStatistics() async {
   String gameStats = await FlutterSecureStorage().read(key: 'statistics');
   if (gameStats == null)
@@ -21,11 +22,13 @@ void initGameStatistics() async {
     );
 }
 
+// Get the user game plays statistics
 Future<Map<String, int>> getGameStatistics() async {
   String gameStats = await FlutterSecureStorage().read(key: 'statistics');
   return Map<String, int>.from(jsonDecode(gameStats));
 }
 
+// Set the user game play statistics for the selected values
 void setGameStatistics({@required Map<String, int> updatedStats}) async {
   Map<String, int> gameStats = await getGameStatistics();
   updatedStats.forEach((key, value) {

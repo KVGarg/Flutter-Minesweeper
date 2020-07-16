@@ -32,7 +32,8 @@ class _StatisticsState extends State<Statistics> {
     return <Widget>[
       getWinsAndTimePlayedDetails(),
       SizedBox(height: 20),
-      getOtherStatTextWidget('W/L', gameStatistics['wins'] ~/ gameStatistics['loses']),
+      getOtherStatTextWidget('Wins', gameStatistics['wins']),
+      getOtherStatTextWidget('Loses', gameStatistics['loses']),
       getOtherStatTextWidget('Squares Popped', gameStatistics['squares_popped']),
       getOtherStatTextWidget('Bombs Diffused', gameStatistics['diffused_bombs']),
       getOtherStatTextWidget('Beginner Levels', gameStatistics['easy_levels']),

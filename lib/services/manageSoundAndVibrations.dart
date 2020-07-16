@@ -7,6 +7,8 @@ final assetsAudioPlayer = AssetsAudioPlayer();
 bool playSounds = true;
 bool playVibrations = true;
 
+// Init the app settings related to sound, and vibrations. These settings are being used all-over
+// the app while a user selcts any option/taps on a button.
 Future<void> initSoundAndVibrationsSettings() async {
   String playSoundsAsStr = await FlutterSecureStorage().read(key: 'ENABLE_SOUNDS');
   if (playSoundsAsStr == null) {
@@ -24,6 +26,7 @@ Future<void> initSoundAndVibrationsSettings() async {
   playVibrations = playVibrationsAsStr == 'true';
 }
 
+// Toggle the sound settings
 void toggleAppSounds() async {
   playSounds = !playSounds;
   if (playSounds)
@@ -31,6 +34,7 @@ void toggleAppSounds() async {
   await FlutterSecureStorage().write(key: 'ENABLE_SOUNDS', value: playSounds.toString());
 }
 
+// Toggle the app vibration settings
 void toggleAppVibrations() async {
   playVibrations = !playVibrations;
   if (playVibrations)
@@ -38,12 +42,14 @@ void toggleAppVibrations() async {
   await FlutterSecureStorage().write(key: 'ENABLE_VIBRATIONS', value: playVibrations.toString());
 }
 
+// Play a selected sound, when user taps on a button
 void playSound({String fileName: GameSounds.BLIP_SOUND_FP}) {
   assetsAudioPlayer.stop();
   if (playSounds)
     assetsAudioPlayer.open(Audio('assets/sounds/$fileName'));
 }
 
+// Play a small amplitude vibration while playing a sound
 Future<void> playVibration() async {
   if (playVibrations && await Vibration.hasVibrator())
     Vibration.vibrate(duration: 300, amplitude: 64);

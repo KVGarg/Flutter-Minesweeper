@@ -26,6 +26,7 @@ class MinesweeperMatrix {
   List<List<BoardSquare>> minesInCellNeighbours = List();
 
   MinesweeperMatrix({@required int gameLevel, @required this.screenSize}) {
+    // Initalize the matrix size, and the mines across the board
     switch (gameLevel) {
       case 1: {
         sizeAndMines = LevelSizeAndMines(size: LevelSize.beginner, mines: LevelMines.beginner);
@@ -41,6 +42,7 @@ class MinesweeperMatrix {
        break;
       }
     }
+
     // 24 -> 12.0 Symmetric padding from left and right
     cellWidth = (screenSize.width - 24) / sizeAndMines.size;
     cellHeight = (screenSize.height * 0.75) / sizeAndMines.size;
@@ -48,10 +50,13 @@ class MinesweeperMatrix {
     flagsLeft = sizeAndMines.mines;
     movesLeft = (sizeAndMines.size * sizeAndMines.size) - sizeAndMines.mines;
 
+    // Find the random positions of mines, that are to be placed across the board
     findRandomPositionsOfMines();
+    // Calculate for each cell, that how much mines are present in there neighbour
     findNeighbouringMines();
   }
 
+  // Find the random positions of mines using random func., and store them in Map form
   findRandomPositionsOfMines() {
     int numberOfMinesPlaced = 0, x, y;
     int maximumMinesInARow = sqrt(sizeAndMines.mines).toInt();
@@ -70,6 +75,7 @@ class MinesweeperMatrix {
     }
   }
 
+  // Calculate for each cell, that how much mines are present in there neighbour
   findNeighbouringMines() {
     int minesInNeighbour;
     bool isMineCell = false;
@@ -117,6 +123,10 @@ class MinesweeperMatrix {
     }
   }
 
+  // Get the original identity of the cell, that is, how it should appear when the user pops off
+  // the square. A cell with no neighbours will be an empty cell; a cell with 1 or more
+  // neighbours will display a count of neighbours in the square, and the one with a bomb/mine
+  // will display that danger mine.
   getCellView({@required bool isMineCell, @required int neighbours}) {
     if (isMineCell) {
 
@@ -154,6 +164,7 @@ class MinesweeperMatrix {
     }
   }
 
+  // Handle the tap on mine, that us, when user accidently clicks on a mine and the game get's over
   Future<void> handleMineExplosion({bool playVibrationAndSound: true}) async {
     if (playVibrationAndSound) {
       playVibration();
@@ -168,6 +179,8 @@ class MinesweeperMatrix {
     });
   }
 
+  // Dig the neighbour cells, and expose all the cells which have 0 mines around them; and stop
+  // where a neighbour tends to have a mine.
   Future<void> digTheGrassAndExposeNeighbours(int xCord, int yCord) async {
 
     for (int row = xCord - 1; row <= xCord + 1; row++) {
@@ -176,6 +189,8 @@ class MinesweeperMatrix {
               && (row > -1 && row < sizeAndMines.size)
               && (column > -1 && column < sizeAndMines.size)) {
           boardSquare = minesInCellNeighbours[row][column];
+          // Dig deeper, if the on-position cell is not yet being popped and flagged, and is not
+          // a mine
           if (boardSquare.neighbourMinesCount >= 0
               && !boardSquare.isSelfMine && !boardSquare.isFlagged && !boardSquare.isPopped) {
             squaresPopped += 1;
@@ -198,7 +213,25 @@ class MinesweeperMatrix {
 
   }
 
+  Future<void> handleSquarePop(int xCord, int yCord) async {
+    boardSquare = minesInCellNeighbours[xCord][yCord];
+    boardSquare.isStateChanged = true;
+    boardSquare.isPopped = true;
+
+    if (boardSquare.isSelfMine) {
+      await handleMineExplosion();
+    } else {
+      await playVibration();
+      playSound(fileName: GameSounds.DIGGING_SOUND_FP);
+      if (boardSquare.neighbourMinesCount == 0)
+        await digTheGrassAndExposeNeighbours(xCord, yCord);
+    }
+  }
+
+  // Handle the User Win! Hide all the safe cells, and expose all the mines.
   Future<void> hideCellsAndShowOnlyMines() async {
+    gameWon = true;
+    playSound(fileName: GameSounds.WIN_SOUND_FP);
     Future.forEach(minesInCellNeighbours, (List<BoardSquare> rowBoardSquares) async {
       await Future.forEach(rowBoardSquares, (BoardSquare boardSquare) async {
         boardSquare.isPopped = boardSquare.isSelfMine;
@@ -207,6 +240,22 @@ class MinesweeperMatrix {
       });
     });
     flagsLeft = bombsDiffused = sizeAndMines.mines;
+  }
+
+  // Toggle the flag on the selected square
+  Future<void> toggleFlagOnSquare(int xCord, int yCord) async {
+
+    playSound(fileName: GameSounds.PLUCK_FLAG_SOUND_FP);
+    await playVibration();
+    boardSquare = minesInCellNeighbours[xCord][yCord];
+    boardSquare.isFlagged = !boardSquare.isFlagged;
+
+    if (boardSquare.isFlagged)
+      flagsLeft -= 1;
+    else
+      flagsLeft += 1;
+
+    boardSquare.isStateChanged = true;
   }
 
 }

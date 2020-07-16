@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:Minesweeper/services/gameStatistics.dart';
 import 'package:Minesweeper/services/manageSoundAndVibrations.dart';
-import 'package:Minesweeper/services/prepareBoardMatrix.dart';
+import 'package:Minesweeper/services/manageBoardMatrix.dart';
 import 'package:Minesweeper/utils/appConstants.dart';
 import 'package:Minesweeper/utils/functions.dart';
 import 'package:flutter/material.dart';

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:Minesweeper/models/BoardModels.dart';
 import 'package:Minesweeper/services/gameStatistics.dart';
 import 'package:Minesweeper/services/manageSoundAndVibrations.dart';
-import 'package:Minesweeper/services/prepareBoardMatrix.dart';
+import 'package:Minesweeper/services/manageBoardMatrix.dart';
 import 'package:Minesweeper/utils/appConstants.dart';
 import 'package:Minesweeper/utils/functions.dart';
 import 'package:flutter/cupertino.dart';
@@ -67,6 +67,8 @@ class _StartGameState extends State<StartGame> {
     );
   }
 
+  // Display the game play stats like how much time it has been went since user started the game,
+  // the number of flags post left, and the sound/vibration settings
   Widget getTimerAndOtherOptions() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -132,6 +134,7 @@ class _StartGameState extends State<StartGame> {
     );
   }
 
+  // Build/Update the game play board, after each user move
   prepareGameBoardWidget() {
     List<Widget> grassRows = List();
     List<Widget> eachGrassRow = List();
@@ -165,11 +168,14 @@ class _StartGameState extends State<StartGame> {
     return new Column(mainAxisSize: MainAxisSize.max, children: grassRows);
   }
 
+  // Get the Widget covering the original identity of the cell
   getGrassImageContainer({@required bool isEvenCell, @required int xCord, @required int yCord}) {
     Widget grassCellView;
+    // Display no cover, if the user has popped the square
     if (boardSquare.isPopped) {
       grassCellView = Container();
     } else {
+      // Display a flag on cell, if the user has not won yet, and has placed a flag on the cell
       if (!minesweeperMatrix.gameWon && boardSquare.isFlagged) {
         grassCellView = Container(
           width: minesweeperMatrix.cellWidth,
@@ -177,7 +183,7 @@ class _StartGameState extends State<StartGame> {
           alignment: Alignment.center,
           child: FlatButton(
             padding: EdgeInsets.all(0),
-            onPressed: () => toggleFlagOnSquare(xCord, yCord),
+            onPressed: () => _toggleFlagOnSquare(xCord, yCord),
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
@@ -194,14 +200,16 @@ class _StartGameState extends State<StartGame> {
             ),
           ),
         );
-      } else  if (!minesweeperMatrix.gameWon) {
+      }
+      // Display the grass on cell, if the user has not won yet
+      else  if (!minesweeperMatrix.gameWon) {
         grassCellView = Container(
           width: minesweeperMatrix.cellWidth,
           height: minesweeperMatrix.cellHeight,
           child: FlatButton(
             padding: EdgeInsets.all(0),
-            onPressed: () => popSquare(xCord, yCord),
-            onLongPress: () => toggleFlagOnSquare(xCord, yCord),
+            onPressed: () => _popSquare(xCord, yCord),
+            onLongPress: () => _toggleFlagOnSquare(xCord, yCord),
             child: new Image.asset(
               getImageFilePath(isEvenCell ? ImageType.DARK_GRASS : ImageType.LIGHT_GRASS),
               width: minesweeperMatrix.cellWidth,
@@ -209,7 +217,9 @@ class _StartGameState extends State<StartGame> {
               fit: BoxFit.fill,),
           ),
         );
-      } else if (minesweeperMatrix.gameWon) {
+      }
+      // Display the grass on cell, if the user has not won yet
+      else if (minesweeperMatrix.gameWon) {
         grassCellView = Container(
           width: minesweeperMatrix.cellWidth,
           height: minesweeperMatrix.cellHeight,
@@ -236,6 +246,7 @@ class _StartGameState extends State<StartGame> {
     return grassCellView;
   }
 
+  // Begin the game time, if the user has started game by tapping on its first square
   void startTimerIFirstSquarePopped() {
     if (!firstSquarePopped) {
       totalSecondsPlayed += 1;
@@ -249,41 +260,30 @@ class _StartGameState extends State<StartGame> {
     }
   }
 
-  Future<void> popSquare(int xCord, int yCord) async {
+  // Handle the user tap on a square if it has no flags, or say pop a square and display its
+  // original identity as well as of its neighbours
+  Future<void> _popSquare(int xCord, int yCord) async {
     startTimerIFirstSquarePopped();
     boardSquare = minesweeperMatrix.minesInCellNeighbours[xCord][yCord];
-    boardSquare.isStateChanged = true;
-    boardSquare.isPopped = true;
+    await minesweeperMatrix.handleSquarePop(xCord, yCord);
 
+    setState(() {});
     if (boardSquare.isSelfMine) {
-      _gameTimer.cancel();
-      await minesweeperMatrix.handleMineExplosion();
-      setState(() {});
       await showGamePlayDialog();
       Navigator.of(context).pop();
-    } else {
-      playSound(fileName: GameSounds.DIGGING_SOUND_FP);
-      playVibration();
-      if (boardSquare.neighbourMinesCount == 0)
-        await minesweeperMatrix.digTheGrassAndExposeNeighbours(xCord, yCord);
-      setState(() {});
-      if (minesweeperMatrix.movesLeft <= 0) await _handleWin();
-    }
-  }
-
-  void flagSquare(int xCord, int yCord) {
-    startTimerIFirstSquarePopped();
+    } else if (minesweeperMatrix.movesLeft <= 0) await _handleWin();
   }
 
   @override
   void dispose() {
     super.dispose();
-    storeCurrentGameStatistics();
+    _storeCurrentGameStatistics();
     if (_gameTimer != null)
       _gameTimer.cancel();
   }
 
-  void storeCurrentGameStatistics() {
+  // Store the user game play statistics in local storage
+  void _storeCurrentGameStatistics() {
     if (totalSecondsPlayed > 0)
       setGameStatistics(updatedStats: {
         'total_time_played': totalSecondsPlayed,
@@ -295,14 +295,13 @@ class _StartGameState extends State<StartGame> {
 
   Future<void> _handleWin() async {
     _gameTimer.cancel();
-    minesweeperMatrix.gameWon = true;
-    playSound(fileName: GameSounds.WIN_SOUND_FP);
     await minesweeperMatrix.hideCellsAndShowOnlyMines();
     setState(() {});
     await showGamePlayDialog();
     Navigator.of(context).pop();
   }
 
+  // Display a dialog, with a message to motivate user win/lose
   Future<void> showGamePlayDialog() async {
     await showDialog(
       context: context,
@@ -338,7 +337,7 @@ class _StartGameState extends State<StartGame> {
       });
   }
 
-
+  // Get the content based on the user win/lose, that us to be displayed inside the alert dialog
   Widget getGamePlayDialogContent() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -380,19 +379,11 @@ class _StartGameState extends State<StartGame> {
     );
   }
 
-  toggleFlagOnSquare(int xCord, int yCord) {
-
-    playSound(fileName: GameSounds.PLUCK_FLAG_SOUND_FP);
-    playVibration();
-    boardSquare = minesweeperMatrix.minesInCellNeighbours[xCord][yCord];
-    boardSquare.isFlagged = !boardSquare.isFlagged;
-
-    if (boardSquare.isFlagged)
-      minesweeperMatrix.flagsLeft -= 1;
-    else
-      minesweeperMatrix.flagsLeft += 1;
-
-    boardSquare.isStateChanged = true;
-    setState(() {});
+  // Toggle the flag on the selected square, and play sound 'n' vibration while toggling it.
+  _toggleFlagOnSquare(int xCord, int yCord) {
+    if (minesweeperMatrix.flagsLeft > 0) {
+      minesweeperMatrix.toggleFlagOnSquare(xCord, yCord);
+      setState(() {});
+    }
   }
 }
