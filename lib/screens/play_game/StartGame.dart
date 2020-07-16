@@ -146,7 +146,9 @@ class _StartGameState extends State<StartGame> {
             alignment: Alignment.center,
             children: <Widget>[
               boardSquare.cellView,
-              getGrassImageContainer(isEvenCell: isNextCellDark),
+              boardSquare.isStateChanged
+              ? getGrassImageContainer(isEvenCell: isNextCellDark)
+              : boardSquare.grassCellView,
             ],
           ),
         ));
@@ -167,9 +169,10 @@ class _StartGameState extends State<StartGame> {
 
   getGrassImageContainer({@required bool isEvenCell}) {
 
+    Widget grassCellView;
     if (boardSquare.isPopped) {
       if (boardSquare.isFlagged) {
-        return Container(
+        grassCellView = Container(
           width: minesweeperMatrix.cellWidth,
           height: minesweeperMatrix.cellHeight,
           alignment: Alignment.center,
@@ -193,10 +196,10 @@ class _StartGameState extends State<StartGame> {
           ),
         );
       } else {
-        return Container();
+        grassCellView = Container();
       }
     } else {
-      return Container(
+      grassCellView = Container(
         width: minesweeperMatrix.cellWidth,
         height: minesweeperMatrix.cellHeight,
         child: FlatButton(
@@ -211,6 +214,10 @@ class _StartGameState extends State<StartGame> {
         ),
       );
     }
+
+    boardSquare.grassCellView = grassCellView;
+    boardSquare.isStateChanged = false;
+    return grassCellView;
 
   }
 
