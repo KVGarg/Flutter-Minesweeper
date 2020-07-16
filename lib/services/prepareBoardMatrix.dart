@@ -156,7 +156,7 @@ class MinesweeperMatrix {
 
   Future<void> handleMineExplosion() async {
     playVibration();
-    playExplosionSound();
+    playSound(fileName: GameSounds.EXPLOSION_SOUND_FP);
     minesPosition.forEach((rowNumber, columnNumbers) async {
       await Future.forEach(columnNumbers, (columnNumber) async {
         boardSquare = minesInCellNeighbours[rowNumber][columnNumber];

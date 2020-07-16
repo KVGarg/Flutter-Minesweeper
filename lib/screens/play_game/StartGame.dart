@@ -248,6 +248,8 @@ class _StartGameState extends State<StartGame> {
       await showGameLoseDialog();
       Navigator.of(context).pop();
     } else {
+      playSound(fileName: GameSounds.DIGGING_SOUND_FP);
+      playVibration();
       if (boardSquare.neighbourMinesCount == 0)
         await minesweeperMatrix.digTheGrassAndExposeNeighbours(xCord, yCord);
       setState(() { });

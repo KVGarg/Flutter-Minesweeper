@@ -88,7 +88,7 @@ class HomeScreen extends StatelessWidget {
           highlightColor: WHITE_COLOR,
           onPressed: onPressed is String
             ? () {
-            playButtonClickSound();
+            playSound();
             playVibration();
             Navigator.of(context).pushNamed(onPressed);
           } : onPressed,

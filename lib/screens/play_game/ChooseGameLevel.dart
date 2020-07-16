@@ -77,7 +77,7 @@ class _ChooseGameLevelState extends State<ChooseGameLevel> {
         borderRadius: BorderRadius.circular(12.0)
       ),
       onPressed: () {
-        playButtonClickSound();
+        playSound();
         playVibration();
         setState(() {
           isLevelSelected = true;

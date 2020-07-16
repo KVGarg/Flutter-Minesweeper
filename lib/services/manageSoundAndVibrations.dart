@@ -27,7 +27,7 @@ Future<void> initSoundAndVibrationsSettings() async {
 void toggleAppSounds() async {
   playSounds = !playSounds;
   if (playSounds)
-    playButtonClickSound();
+    playSound();
   await FlutterSecureStorage().write(key: 'ENABLE_SOUNDS', value: playSounds.toString());
 }
 
@@ -38,22 +38,10 @@ void toggleAppVibrations() async {
   await FlutterSecureStorage().write(key: 'ENABLE_VIBRATIONS', value: playVibrations.toString());
 }
 
-void playButtonClickSound() {
+void playSound({String fileName: GameSounds.BLIP_SOUND_FP}) {
   assetsAudioPlayer.stop();
   if (playSounds)
-    assetsAudioPlayer.open(Audio(GameSounds.BLIP_SOUND_FP));
-}
-
-void playExplosionSound() {
-  assetsAudioPlayer.stop();
-  if (playSounds)
-    assetsAudioPlayer.open(Audio(GameSounds.EXPLOSION_SOUND_FP));
-}
-
-void playShovelDigSound() {
-  assetsAudioPlayer.stop();
-  if (playSounds)
-    assetsAudioPlayer.open(Audio(GameSounds.DIGGING_SOUND_FP));
+    assetsAudioPlayer.open(Audio('assets/sounds/$fileName'));
 }
 
 Future<void> playVibration() async {

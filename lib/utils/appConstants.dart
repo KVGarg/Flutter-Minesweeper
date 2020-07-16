@@ -74,9 +74,10 @@ const NO_GAME_PLAYED_MESSAGE = 'Hey there! Looks like you have not played any ga
 
 // SOUND FILE PATHS
 class GameSounds {
-  static const DIGGING_SOUND_FP = 'assets/sounds/digging.wav';
-  static const BLIP_SOUND_FP = 'assets/sounds/blip.wav';
-  static const EXPLOSION_SOUND_FP = 'assets/sounds/explosion.mp3';
+  static const DIGGING_SOUND_FP = 'digging.wav';
+  static const BLIP_SOUND_FP = 'blip.wav';
+  static const EXPLOSION_SOUND_FP = 'explosion.mp3';
+  static const WIN_SOUND_FP = 'win_sound.wav';
 }
 
 // Game Matrices Init Classes
