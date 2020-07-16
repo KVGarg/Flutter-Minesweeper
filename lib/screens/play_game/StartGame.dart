@@ -146,7 +146,7 @@ class _StartGameState extends State<StartGame> {
             alignment: Alignment.center,
             children: <Widget>[
               boardSquare.cellView,
-//              getGrassImageContainer(isEvenCell: isNextCellDark),
+              getGrassImageContainer(isEvenCell: isNextCellDark),
             ],
           ),
         ));
@@ -166,6 +166,51 @@ class _StartGameState extends State<StartGame> {
 
 
   getGrassImageContainer({@required bool isEvenCell}) {
+
+    if (boardSquare.isPopped) {
+      if (boardSquare.isFlagged) {
+        return Container(
+          width: minesweeperMatrix.cellWidth,
+          height: minesweeperMatrix.cellHeight,
+          alignment: Alignment.center,
+          child: FlatButton(
+            padding: EdgeInsets.all(0),
+            onPressed: () {},
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                new Image.asset(
+                  getImageFilePath(isEvenCell ? ImageType.DARK_GRASS : ImageType.LIGHT_GRASS),
+                  width: minesweeperMatrix.cellWidth,
+                  height: minesweeperMatrix.cellHeight,
+                  fit: BoxFit.fill,),
+                new Image.asset(getImageFilePath(ImageType.FLAG_ICON),
+                  width: minesweeperMatrix.sizeAndMines.size > 20
+                    ? IconSize.MEDIUM : IconSize.LARGE,
+                  fit: BoxFit.fill,),
+              ],
+            ),
+          ),
+        );
+      } else {
+        return Container();
+      }
+    } else {
+      return Container(
+        width: minesweeperMatrix.cellWidth,
+        height: minesweeperMatrix.cellHeight,
+        child: FlatButton(
+          padding: EdgeInsets.all(0),
+          onPressed: () {},
+          onLongPress: () {},
+          child: new Image.asset(
+            getImageFilePath(isEvenCell ? ImageType.DARK_GRASS : ImageType.LIGHT_GRASS),
+            width: minesweeperMatrix.cellWidth,
+            height: minesweeperMatrix.cellHeight,
+            fit: BoxFit.fill,),
+        ),
+      );
+    }
 
   }
 
