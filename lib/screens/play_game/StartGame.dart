@@ -169,9 +169,10 @@ class _StartGameState extends State<StartGame> {
 
 
   getGrassImageContainer({@required bool isEvenCell, @required int xCord, @required int yCord}) {
-
     Widget grassCellView;
     if (boardSquare.isPopped) {
+      grassCellView = Container();
+    } else {
       if (boardSquare.isFlagged) {
         grassCellView = Container(
           width: minesweeperMatrix.cellWidth,
@@ -197,29 +198,26 @@ class _StartGameState extends State<StartGame> {
           ),
         );
       } else {
-        grassCellView = Container();
+        grassCellView = Container(
+          width: minesweeperMatrix.cellWidth,
+          height: minesweeperMatrix.cellHeight,
+          child: FlatButton(
+            padding: EdgeInsets.all(0),
+            onPressed: () => popSquare(xCord, yCord),
+            onLongPress: () {},
+            child: new Image.asset(
+              getImageFilePath(isEvenCell ? ImageType.DARK_GRASS : ImageType.LIGHT_GRASS),
+              width: minesweeperMatrix.cellWidth,
+              height: minesweeperMatrix.cellHeight,
+              fit: BoxFit.fill,),
+          ),
+        );
       }
-    } else {
-      grassCellView = Container(
-        width: minesweeperMatrix.cellWidth,
-        height: minesweeperMatrix.cellHeight,
-        child: FlatButton(
-          padding: EdgeInsets.all(0),
-          onPressed: () => popSquare(xCord, yCord),
-          onLongPress: () {},
-          child: new Image.asset(
-            getImageFilePath(isEvenCell ? ImageType.DARK_GRASS : ImageType.LIGHT_GRASS),
-            width: minesweeperMatrix.cellWidth,
-            height: minesweeperMatrix.cellHeight,
-            fit: BoxFit.fill,),
-        ),
-      );
     }
 
     boardSquare.grassCellView = grassCellView;
     boardSquare.isStateChanged = false;
     return grassCellView;
-
   }
 
   void startTimerIFirstSquarePopped() {
