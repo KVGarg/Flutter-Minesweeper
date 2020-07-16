@@ -83,7 +83,7 @@ class _ChooseGameLevelState extends State<ChooseGameLevel> {
           isLevelSelected = true;
         });
 
-        Timer(Duration(seconds: 3), () async {
+        Future.delayed(Duration(seconds: 3), () async {
           MinesweeperMatrix minesweeperMatrix = new MinesweeperMatrix(
             gameLevel: gameLevel, screenSize: screenSize
           );

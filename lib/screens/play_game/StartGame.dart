@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Minesweeper/models/BoardModels.dart';
 import 'package:Minesweeper/services/gameStatistics.dart';
 import 'package:Minesweeper/services/manageSoundAndVibrations.dart';
 import 'package:Minesweeper/services/prepareBoardMatrix.dart';
@@ -7,6 +8,7 @@ import 'package:Minesweeper/utils/appConstants.dart';
 import 'package:Minesweeper/utils/functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class StartGame extends StatefulWidget {
   @override
@@ -18,12 +20,11 @@ class _StartGameState extends State<StartGame> {
   Size screenSize;
   Timer _gameTimer;
   Widget emptyCellWidget;
+  BoardSquare boardSquare;
   int totalSecondsPlayed = 0;
   bool isNextCellDark = false;
   bool firstSquarePopped = false;
   MinesweeperMatrix minesweeperMatrix;
-  Color darkEmptyCellColor = Color(0xffd7b899);
-  Color lightEmptyCellColor = Color(0xfff1ceab);
 
   @override
   Widget build(BuildContext context) {
@@ -132,35 +133,39 @@ class _StartGameState extends State<StartGame> {
   }
 
   prepareGameBoardWidget() {
-
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: minesweeperMatrix.sizeAndMines.size * minesweeperMatrix.sizeAndMines.size,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: minesweeperMatrix.sizeAndMines.size,
-      ),
-      itemBuilder: (context, position) {
-        int rowNumber = (position / minesweeperMatrix.sizeAndMines.size).floor();
-        int columnNumber = (position % minesweeperMatrix.sizeAndMines.size);
-        isNextCellDark = (rowNumber + columnNumber) % 2 == 0;
-        return Container(
+    List<Widget> grassRows = List();
+    List<Widget> eachGrassRow = List();
+    for (int row = 0; row < minesweeperMatrix.sizeAndMines.size; row++) {
+      for (int column = 0; column < minesweeperMatrix.sizeAndMines.size; column++) {
+        boardSquare = minesweeperMatrix.minesInCellNeighbours[row][column];
+        eachGrassRow.add(Container(
           width: minesweeperMatrix.cellWidth,
           height: minesweeperMatrix.cellHeight,
-          child: FlatButton(
-            onPressed: () => popSquare(rowNumber, columnNumber),
-            onLongPress: () => flagSquare(rowNumber, columnNumber),
-            padding: EdgeInsets.all(0),
-            child: new Image.asset(isNextCellDark
-                ? getImageFilePath(ImageType.DARK_GRASS): getImageFilePath(ImageType.LIGHT_GRASS),
-              width: minesweeperMatrix.cellWidth,
-              height: minesweeperMatrix.cellHeight,
-              fit: BoxFit.fill,
-            ),
-          )
-        );
+          child: Stack(
+            fit: StackFit.expand,
+            alignment: Alignment.center,
+            children: <Widget>[
+              boardSquare.cellView,
+//              getGrassImageContainer(isEvenCell: isNextCellDark),
+            ],
+          ),
+        ));
+        isNextCellDark = !isNextCellDark;
       }
-    );
+      if (minesweeperMatrix.sizeAndMines.size % 2 == 0) {
+        isNextCellDark = !isNextCellDark;
+      }
+      grassRows.add(new Row(mainAxisSize: MainAxisSize.min, children: eachGrassRow));
+      eachGrassRow = List();
+    }
+
+    isNextCellDark = false;
+    return new Column(mainAxisSize: MainAxisSize.max, children: grassRows);
+
+  }
+
+
+  getGrassImageContainer({@required bool isEvenCell}) {
 
   }
 
@@ -189,7 +194,8 @@ class _StartGameState extends State<StartGame> {
   void dispose() {
     super.dispose();
     storeCurrentGameStatistics();
-    _gameTimer.cancel();
+    if (_gameTimer != null)
+      _gameTimer.cancel();
   }
 
   void storeCurrentGameStatistics() {

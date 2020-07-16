@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:Minesweeper/models/BoardModels.dart';
 import 'package:Minesweeper/utils/appConstants.dart';
+import 'package:Minesweeper/utils/functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,7 @@ class MinesweeperMatrix {
   int movesLeft;
   int flagsLeft;
   Size screenSize;
+  bool isEvenCell;
   int squaresPopped = 0;
   int bombsDiffused = 0;
   bool gameWon = false;
@@ -18,6 +20,8 @@ class MinesweeperMatrix {
   double cellWidth, cellHeight;
   LevelSizeAndMines sizeAndMines;
   Map<int, List<int>> minesPosition = Map();
+  Color darkEmptyCellColor = Color(0xffd7b899);
+  Color lightEmptyCellColor = Color(0xfff1ceab);
   List<List<BoardSquare>> minesInCellNeighbours = List();
 
   MinesweeperMatrix({@required int gameLevel, @required this.screenSize}) {
@@ -72,6 +76,7 @@ class MinesweeperMatrix {
       minesInCellNeighbours.insert(row, List());
       for (int column = 0; column < sizeAndMines.size; column++) {
         minesInNeighbour = 0;
+        isEvenCell = (row + column) % 2 == 0;
         // Check mines in NW
         if (minesPosition.containsKey(row-1) && minesPosition[row-1].contains(column-1))
           minesInNeighbour += 1;
@@ -105,8 +110,46 @@ class MinesweeperMatrix {
         minesInCellNeighbours[row].add(BoardSquare(
           neighbourMinesCount: minesInNeighbour,
           isSelfMine: isMineCell,
+          cellView: getCellView(isMineCell: isMineCell, neighbours: minesInNeighbour),
         ));
       }
+    }
+  }
+
+  getCellView({@required bool isMineCell, @required int neighbours}) {
+    if (isMineCell) {
+
+      return Container(
+        width: cellWidth,
+        height: cellHeight,
+        color: isEvenCell ? darkEmptyCellColor : lightEmptyCellColor,
+        child: new Image.asset(getImageFilePath(ImageType.APP_LOGO)),
+      );
+
+    } else if (neighbours > 0) {
+
+      return Container(
+        width: cellWidth,
+        height: cellHeight,
+        alignment: Alignment.center,
+        color: isEvenCell ? darkEmptyCellColor : lightEmptyCellColor,
+        child: Text('$neighbours',
+          textAlign: TextAlign.center,
+          style: getTextStyleSettings(
+            fontSize: sizeAndMines.size > 20 ? FontSize.SMALL : FontSize.MEDIUM,
+            fontColor: NeighbourDensityBasedColor().getColorFromIndex(index: neighbours)
+          ),
+        ),
+      );
+
+    } else {
+
+      return Container(
+        width: cellWidth,
+        height: cellHeight,
+        color: isEvenCell ? darkEmptyCellColor : lightEmptyCellColor,
+      );
+
     }
   }
 
