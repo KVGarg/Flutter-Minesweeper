@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:Minesweeper/models/BoardModels.dart';
+import 'package:Minesweeper/services/manageSoundAndVibrations.dart';
 import 'package:Minesweeper/utils/appConstants.dart';
 import 'package:Minesweeper/utils/functions.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +17,6 @@ class MinesweeperMatrix {
   int squaresPopped = 0;
   int bombsDiffused = 0;
   bool gameWon = false;
-  bool gameOver = false;
   BoardSquare boardSquare;
   double cellWidth, cellHeight;
   LevelSizeAndMines sizeAndMines;
@@ -155,6 +155,8 @@ class MinesweeperMatrix {
   }
 
   Future<void> handleMineExplosion() async {
+    playVibration();
+    playExplosionSound();
     minesPosition.forEach((rowNumber, columnNumbers) async {
       await Future.forEach(columnNumbers, (columnNumber) async {
         boardSquare = minesInCellNeighbours[rowNumber][columnNumber];
@@ -174,12 +176,14 @@ class MinesweeperMatrix {
           boardSquare = minesInCellNeighbours[row][column];
           if (boardSquare.neighbourMinesCount >= 0
               && !boardSquare.isSelfMine && !boardSquare.isFlagged && !boardSquare.isPopped) {
+            squaresPopped += 1;
             boardSquare.isStateChanged = true;
             boardSquare.isPopped = true;
             if (boardSquare.neighbourMinesCount == 0)
               await digTheGrassAndExposeNeighbours(row, column);
           }
         } else {
+          squaresPopped += 1;
           boardSquare = minesInCellNeighbours[xCord][yCord];
           boardSquare.isStateChanged = true;
           boardSquare.isPopped = true;

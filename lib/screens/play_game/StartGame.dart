@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:Minesweeper/models/BoardModels.dart';
 import 'package:Minesweeper/services/gameStatistics.dart';
@@ -241,9 +242,11 @@ class _StartGameState extends State<StartGame> {
     boardSquare.isPopped = true;
 
     if (boardSquare.isSelfMine) {
+      _gameTimer.cancel();
       await minesweeperMatrix.handleMineExplosion();
       setState(() { });
-      showGameLoseDialog();
+      await showGameLoseDialog();
+      Navigator.of(context).pop();
     } else {
       if (boardSquare.neighbourMinesCount == 0)
         await minesweeperMatrix.digTheGrassAndExposeNeighbours(xCord, yCord);
@@ -274,7 +277,68 @@ class _StartGameState extends State<StartGame> {
       });
   }
 
-  void showGameLoseDialog() {
-    print('Game Lose');
+  Future<void> showGameLoseDialog() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext buildContext) {
+        return Platform.isIOS
+          ? CupertinoAlertDialog(
+            title: Text('Mine Exploded!', style: getTextStyleSettings(fontColor: RED_ACCENT_COLOR)),
+            content: getTryAgainDialogContent(),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('Try again?', style: getTextStyleSettings(fontColor: GREEN_COLOR),)
+              )
+            ])
+          : AlertDialog(
+              title: Text('Mine Exploded!', style: getTextStyleSettings(fontColor: RED_ACCENT_COLOR)),
+              content: getTryAgainDialogContent(),actions: <Widget>[
+                FlatButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Try again?', style: getTextStyleSettings(fontColor: GREEN_COLOR),)
+                )
+              ]);
+      }
+    );
   }
+
+  Widget getTryAgainDialogContent() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Text(
+          'Accidentally! You stepped on a mine. No Worries, Wins and Loses are a part of game. '
+            'Try again one more time.',
+          style: getTextStyleSettings(),
+          textAlign: TextAlign.justify,),
+        Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              new Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  new Image.asset(getImageFilePath(ImageType.CLOCK_ICON), width: 50,),
+                  Text('$totalSecondsPlayed',
+                    style: getTextStyleSettings(fontSize: FontSize.MEDIUM * 1.5))
+                ],
+              ),
+              new Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  new Image.asset(getImageFilePath(ImageType.TROPHY_ICON), width: 50),
+                  Text('${minesweeperMatrix.squaresPopped}',
+                    style: getTextStyleSettings(fontSize: FontSize.MEDIUM * 1.5),)
+                ],
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
 }
