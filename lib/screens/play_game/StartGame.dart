@@ -177,7 +177,7 @@ class _StartGameState extends State<StartGame> {
           alignment: Alignment.center,
           child: FlatButton(
             padding: EdgeInsets.all(0),
-            onPressed: () {},
+            onPressed: () => toggleFlagOnSquare(xCord, yCord),
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
@@ -194,14 +194,14 @@ class _StartGameState extends State<StartGame> {
             ),
           ),
         );
-      } else  if (!minesweeperMatrix.gameWon && boardSquare.isFlagged) {
+      } else  if (!minesweeperMatrix.gameWon) {
         grassCellView = Container(
           width: minesweeperMatrix.cellWidth,
           height: minesweeperMatrix.cellHeight,
           child: FlatButton(
             padding: EdgeInsets.all(0),
             onPressed: () => popSquare(xCord, yCord),
-            onLongPress: () {},
+            onLongPress: () => toggleFlagOnSquare(xCord, yCord),
             child: new Image.asset(
               getImageFilePath(isEvenCell ? ImageType.DARK_GRASS : ImageType.LIGHT_GRASS),
               width: minesweeperMatrix.cellWidth,
@@ -294,6 +294,7 @@ class _StartGameState extends State<StartGame> {
   }
 
   Future<void> _handleWin() async {
+    _gameTimer.cancel();
     minesweeperMatrix.gameWon = true;
     playSound(fileName: GameSounds.WIN_SOUND_FP);
     await minesweeperMatrix.hideCellsAndShowOnlyMines();
@@ -377,5 +378,21 @@ class _StartGameState extends State<StartGame> {
         ),
       ],
     );
+  }
+
+  toggleFlagOnSquare(int xCord, int yCord) {
+
+    playSound(fileName: GameSounds.PLUCK_FLAG_SOUND_FP);
+    playVibration();
+    boardSquare = minesweeperMatrix.minesInCellNeighbours[xCord][yCord];
+    boardSquare.isFlagged = !boardSquare.isFlagged;
+
+    if (boardSquare.isFlagged)
+      minesweeperMatrix.flagsLeft -= 1;
+    else
+      minesweeperMatrix.flagsLeft += 1;
+
+    boardSquare.isStateChanged = true;
+    setState(() {});
   }
 }

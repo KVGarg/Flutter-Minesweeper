@@ -206,6 +206,7 @@ class MinesweeperMatrix {
         boardSquare.isStateChanged = true;
       });
     });
+    flagsLeft = bombsDiffused = sizeAndMines.mines;
   }
 
 }

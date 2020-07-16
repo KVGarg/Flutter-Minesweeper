@@ -78,6 +78,7 @@ class GameSounds {
   static const BLIP_SOUND_FP = 'blip.wav';
   static const EXPLOSION_SOUND_FP = 'explosion.mp3';
   static const WIN_SOUND_FP = 'win_sound.wav';
+  static const PLUCK_FLAG_SOUND_FP = 'pluck_flag_post.wav';
 }
 
 // Game Matrices Init Classes
