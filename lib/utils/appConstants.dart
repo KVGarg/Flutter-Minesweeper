@@ -30,10 +30,13 @@ class FontSize {
 }
 
 // SOCIAL MEDIA LINKS
-const LINKEDIN_PROFILE = 'https://www.linkedin.com/in/keshav-g-88239b92/';
-const GITHUB_PROFILE = 'https://github.com/KVGarg/';
-const GITLAB_PROFILE = 'https://gitlab.com/KVGarg/';
-const PERSONAL_WEBSITE = 'https://kvgarg.github.io/';
+class SocialMediaLinks {
+  static const LINKEDIN_PROFILE = 'https://www.linkedin.com/in/keshav-g-88239b92/';
+  static const GITHUB_PROFILE = 'https://github.com/KVGarg/';
+  static const GITLAB_PROFILE = 'https://gitlab.com/KVGarg/';
+  static const PERSONAL_WEBSITE = 'https://kvgarg.github.io/';
+  static const APP_DOWNLOAD_LINK = 'https://flutter.dev';
+}
 
 // ABOUT DEVELOPER
 const NAME = 'Keshav Garg';
@@ -69,13 +72,12 @@ const NO_GAME_PLAYED_MESSAGE = 'Hey there! Looks like you have not played any ga
   'stopping you from playing this cool game, an all-time favourite game from childhood. Hurry Up! '
   'Go Back,  and play a game.';
 
-// APP DOWNLOAD Link
-const GOOGLE_DRIVE_LINK = 'https://flutter.dev';
-
 // SOUND FILE PATHS
-const BLIP_SOUND_FP = 'assets/sounds/blip.wav';
-const DIGGING_SOUND_FP = 'assets/sounds/digging.wav';
-const EXPLOSION_SOUND_FP = 'assets/sounds/explosion.mp3';
+class GameSounds {
+  static const DIGGING_SOUND_FP = 'assets/sounds/digging.wav';
+  static const BLIP_SOUND_FP = 'assets/sounds/blip.wav';
+  static const EXPLOSION_SOUND_FP = 'assets/sounds/explosion.mp3';
+}
 
 // Game Matrices Init Classes
 class GameLevels {

@@ -71,10 +71,11 @@ Widget getAnimatedLoader({bool isFormSubmitted = true}) {
 }
 
 TextStyle getTextStyleSettings({
-  String fontFamily: 'PressStart2P', double fontSize: FontSize.MEDIUM
+  String fontFamily: 'PressStart2P', double fontSize: FontSize.MEDIUM,
+  Color fontColor: BLACK_87_COLOR
 }) {
   return TextStyle(
-    color: BLACK_87_COLOR,
+    color: fontColor,
     height: 1.5,
     fontFamily: fontFamily,
     textBaseline: TextBaseline.ideographic,
@@ -99,7 +100,7 @@ String getDurationString({@required int seconds}) {
 }
 
 void shareApp() {
-  Share.share('Download and Install this cool board game.\nDownload Link: $GOOGLE_DRIVE_LINK',
-    subject: 'Minesweeper Board Game'
+  Share.share('Download and Install this cool board game.\nDownload Link:'
+    ' ${SocialMediaLinks.APP_DOWNLOAD_LINK}', subject: 'Minesweeper Board Game'
   );
 }

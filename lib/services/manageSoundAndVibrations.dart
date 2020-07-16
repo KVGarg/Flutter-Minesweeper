@@ -41,19 +41,19 @@ void toggleAppVibrations() async {
 void playButtonClickSound() {
   assetsAudioPlayer.stop();
   if (playSounds)
-    assetsAudioPlayer.open(Audio(BLIP_SOUND_FP));
+    assetsAudioPlayer.open(Audio(GameSounds.BLIP_SOUND_FP));
 }
 
 void playExplosionSound() {
   assetsAudioPlayer.stop();
   if (playSounds)
-    assetsAudioPlayer.open(Audio(EXPLOSION_SOUND_FP));
+    assetsAudioPlayer.open(Audio(GameSounds.EXPLOSION_SOUND_FP));
 }
 
 void playShovelDigSound() {
   assetsAudioPlayer.stop();
   if (playSounds)
-    assetsAudioPlayer.open(Audio(DIGGING_SOUND_FP));
+    assetsAudioPlayer.open(Audio(GameSounds.DIGGING_SOUND_FP));
 }
 
 Future<void> playVibration() async {

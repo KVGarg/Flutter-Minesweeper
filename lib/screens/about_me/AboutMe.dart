@@ -44,25 +44,25 @@ class AboutMe extends StatelessWidget {
                     icon: FaIcon(FontAwesomeIcons.linkedin),
                     iconSize: IconSize.MEDIUM,
                     onPressed: () async {
-                      launch(LINKEDIN_PROFILE);
+                      launch(SocialMediaLinks.LINKEDIN_PROFILE);
                     }),
                   IconButton(
                     icon: FaIcon(FontAwesomeIcons.githubSquare),
                     iconSize: IconSize.MEDIUM,
                     onPressed: () async {
-                      launch(GITHUB_PROFILE);
+                      launch(SocialMediaLinks.GITHUB_PROFILE);
                     }),
                   IconButton(
                     icon: FaIcon(FontAwesomeIcons.gitlab),
                     iconSize: IconSize.MEDIUM,
                     onPressed: () async {
-                      launch(GITLAB_PROFILE);
+                      launch(SocialMediaLinks.GITLAB_PROFILE);
                     }),
                   IconButton(
                     icon: FaIcon(FontAwesomeIcons.internetExplorer),
                     iconSize: IconSize.MEDIUM,
                     onPressed: () async {
-                      launch(PERSONAL_WEBSITE);
+                      launch(SocialMediaLinks.PERSONAL_WEBSITE);
                     }),
                 ],
               ),
