@@ -147,7 +147,7 @@ class _StartGameState extends State<StartGame> {
             children: <Widget>[
               boardSquare.cellView,
               boardSquare.isStateChanged
-              ? getGrassImageContainer(isEvenCell: isNextCellDark)
+              ? getGrassImageContainer(isEvenCell: isNextCellDark, xCord: row, yCord: column)
               : boardSquare.grassCellView,
             ],
           ),
@@ -167,7 +167,7 @@ class _StartGameState extends State<StartGame> {
   }
 
 
-  getGrassImageContainer({@required bool isEvenCell}) {
+  getGrassImageContainer({@required bool isEvenCell, @required int xCord, @required int yCord}) {
 
     Widget grassCellView;
     if (boardSquare.isPopped) {
@@ -204,7 +204,7 @@ class _StartGameState extends State<StartGame> {
         height: minesweeperMatrix.cellHeight,
         child: FlatButton(
           padding: EdgeInsets.all(0),
-          onPressed: () {},
+          onPressed: () => popSquare(xCord, yCord),
           onLongPress: () {},
           child: new Image.asset(
             getImageFilePath(isEvenCell ? ImageType.DARK_GRASS : ImageType.LIGHT_GRASS),
@@ -234,8 +234,22 @@ class _StartGameState extends State<StartGame> {
     }
   }
 
-  void popSquare(int xCord, int yCord) {
+  Future<void> popSquare(int xCord, int yCord) async {
     startTimerIFirstSquarePopped();
+    boardSquare = minesweeperMatrix.minesInCellNeighbours[xCord][yCord];
+    boardSquare.isStateChanged = true;
+    boardSquare.isPopped = true;
+
+    if (boardSquare.isSelfMine) {
+      await minesweeperMatrix.handleMineExplosion();
+      setState(() { });
+      showGameLoseDialog();
+    } else {
+      if (boardSquare.neighbourMinesCount == 0)
+        await minesweeperMatrix.digTheGrassAndExposeNeighbours(xCord, yCord);
+      setState(() { });
+    }
+
   }
 
   void flagSquare(int xCord, int yCord) {
@@ -258,5 +272,9 @@ class _StartGameState extends State<StartGame> {
         'diffused_bombs': minesweeperMatrix.bombsDiffused,
         minesweeperMatrix.gameWon ? 'wins' : 'loses': 1,
       });
+  }
+
+  void showGameLoseDialog() {
+    print('Game Lose');
   }
 }

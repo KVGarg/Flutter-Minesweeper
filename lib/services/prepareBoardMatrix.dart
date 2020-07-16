@@ -17,6 +17,7 @@ class MinesweeperMatrix {
   int bombsDiffused = 0;
   bool gameWon = false;
   bool gameOver = false;
+  BoardSquare boardSquare;
   double cellWidth, cellHeight;
   LevelSizeAndMines sizeAndMines;
   Map<int, List<int>> minesPosition = Map();
@@ -151,6 +152,42 @@ class MinesweeperMatrix {
       );
 
     }
+  }
+
+  Future<void> handleMineExplosion() async {
+    minesPosition.forEach((rowNumber, columnNumbers) async {
+      await Future.forEach(columnNumbers, (columnNumber) async {
+        boardSquare = minesInCellNeighbours[rowNumber][columnNumber];
+        boardSquare.isPopped = true;
+        boardSquare.isStateChanged = true;
+      });
+    });
+  }
+
+  Future<void> digTheGrassAndExposeNeighbours(int xCord, int yCord) async {
+
+    for (int row = xCord - 1; row <= xCord + 1; row++) {
+      for (int column = yCord - 1; column <= yCord + 1; column++) {
+        if (!(row == xCord && column == yCord)
+              && (row > -1 && row < sizeAndMines.size)
+              && (column > -1 && column < sizeAndMines.size)) {
+          boardSquare = minesInCellNeighbours[row][column];
+          if (boardSquare.neighbourMinesCount >= 0
+              && !boardSquare.isSelfMine && !boardSquare.isFlagged && !boardSquare.isPopped) {
+            boardSquare.isStateChanged = true;
+            boardSquare.isPopped = true;
+            if (boardSquare.neighbourMinesCount == 0)
+              await digTheGrassAndExposeNeighbours(row, column);
+          }
+        } else {
+          boardSquare = minesInCellNeighbours[xCord][yCord];
+          boardSquare.isStateChanged = true;
+          boardSquare.isPopped = true;
+        }
+      }
+    }
+    return;
+
   }
 
 }
