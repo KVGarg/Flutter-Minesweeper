@@ -53,7 +53,9 @@ class _StatisticsState extends State<Statistics> {
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          new Image.asset('assets/images/sad_emoji.png', width: 200, alignment: Alignment.center,),
+          new Image.asset(
+            getImageFilePath(ImageType.SAD_EMOJI), width: 200, alignment: Alignment.center
+          ),
         ],
       ),
       new SizedBox(height: 10),
@@ -73,7 +75,7 @@ class _StatisticsState extends State<Statistics> {
           new Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              new Image.asset('assets/images/trophy_icon.png'),
+              new Image.asset(getImageFilePath(ImageType.TROPHY_ICON)),
               new Text(
                 gameStatistics['wins'] > 0 ? '${gameStatistics['wins']}' : '---',
                 style: getTextStyleSettings())
@@ -82,7 +84,7 @@ class _StatisticsState extends State<Statistics> {
           new Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              new Image.asset('assets/images/clock_icon.png'),
+              new Image.asset(getImageFilePath(ImageType.CLOCK_ICON)),
               new Text(
                 getDurationString(seconds: gameStatistics['total_time_played']),
                 style: getTextStyleSettings())

@@ -38,7 +38,7 @@ Widget getAppBar({@required String title}) {
   return AppBar(
     title: Text(title, style: getTextStyleSettings(),),
     backgroundColor: WHITE_COLOR,
-    leading: new Image.asset('assets/images/app_logo.png'),
+    leading: new Image.asset(getImageFilePath(ImageType.APP_LOGO)),
     elevation: 0.0,
     actions: <Widget>[
       IconButton(
@@ -103,4 +103,8 @@ void shareApp() {
   Share.share('Download and Install this cool board game.\nDownload Link:'
     ' ${SocialMediaLinks.APP_DOWNLOAD_LINK}', subject: 'Minesweeper Board Game'
   );
+}
+
+String getImageFilePath(String imageType) {
+  return 'assets/images/$imageType';
 }

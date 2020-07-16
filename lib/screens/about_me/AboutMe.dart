@@ -32,7 +32,7 @@ class AboutMe extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.0),
                   image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: new AssetImage('assets/images/keshav_garg.jpeg'))
+                    image: new AssetImage(getImageFilePath(ImageType.DEVELOPER)))
                 ),
               ),
               getAuthorTextWidget(label: ABOUT_DEVELOPER),

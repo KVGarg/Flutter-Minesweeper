@@ -8,6 +8,7 @@ import 'package:Minesweeper/screens/statistics/Statistics.dart';
 import 'package:Minesweeper/services/gameStatistics.dart';
 import 'package:Minesweeper/services/manageSoundAndVibrations.dart';
 import 'package:Minesweeper/utils/appConstants.dart';
+import 'package:Minesweeper/utils/functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -64,7 +65,7 @@ class MyApp extends StatelessWidget {
       seconds: 3,
       navigateAfterSeconds: '/home',
       title: new Text('Minesweeper Board Game'),
-      image: new Image.asset('assets/images/app_logo.png'),
+      image: new Image.asset(getImageFilePath(ImageType.APP_LOGO)),
       backgroundColor: WHITE_COLOR,
       photoSize: 100.0,
       loaderColor: ACCENT_COLOR

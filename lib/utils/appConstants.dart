@@ -108,3 +108,17 @@ class NeighbourDensityBasedColor {
   static Color seven = Colors.purpleAccent;
   static Color eight = Colors.purple;
 }
+
+class ImageType {
+  static const APP_LOGO = 'app_logo.png';
+  static const CLOCK_ICON = 'clock_icon.png';
+  static const DARK_GRASS = 'dark_grass.png';
+  static const FLAG_ICON = 'flag_icon.png';
+  static const DEVELOPER = 'keshav_garg.jpeg';
+  static const LIGHT_GRASS = 'light_grass.png';
+  static const LOSE_SCREEN = 'lose_screen.png';
+  static const SAD_EMOJI = 'sad_emoji.png';
+  static const SHOVEL_ICON = 'shovel_icon.png';
+  static const TROPHY_ICON = 'trophy_icon.png';
+  static const WIN_SCREEN = 'win_Screen.png';
+}
