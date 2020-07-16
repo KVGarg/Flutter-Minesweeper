@@ -21,3 +21,10 @@ It support 3-levels with some extra support/features in the app-
 
 Download and Install the app now, from [Google Drive](https://drive.google.com/drive/folders/1dn-J2nRrjQWZStzwnJgULLIdXkq_GX7J?usp=sharing) and let me know how much
 you like it.
+
+## Future Scope
+The app functionality can be extended to more enhancements, and features like-
+1. Animations on the Game Play Board
+2. Multi-Player Game Setup
+3. Game Play Board Themes, that can be purchased via earned coins from gameplay
+4. More gameplay statistics, and can also me user-authenticated if adding Wallet Purchasing etc.
